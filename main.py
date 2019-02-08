@@ -1,10 +1,9 @@
 import requests, os
 
 
-if not os.path.exists('images'):
-    os.makedirs('images')
-
 def download_image(image_url, filename):
+    if not os.path.exists('images'):
+        os.makedirs('images')
     response = requests.get(image_url)
     with open('images/{}'.format(filename), 'wb') as image_file:
         image_file.write(response.content)
