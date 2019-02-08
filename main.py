@@ -2,6 +2,10 @@ import requests, os, json
 from pprint import pprint
 
 
+def get_file_extension(file_url):
+    return file_url.split('.')[-1]
+
+
 def download_image(image_url, filename):
     if not os.path.exists('images'):
         os.makedirs('images')
@@ -10,7 +14,7 @@ def download_image(image_url, filename):
         image_file.write(response.content)
 
 
-def get_latest_spasex_photos():
+def get_latest_spasex_photos_urls():
     url='https://api.spacexdata.com/v3/launches/latest?pretty=true'
     response = requests.get(url)
     photos_list = json.loads(response.text)['links']['flickr_images']
@@ -18,18 +22,30 @@ def get_latest_spasex_photos():
 
 
 def download_latest_spasex_photos():
-    for counter, url_photo in enumerate(get_latest_spasex_photos()):
-        download_image(url_photo, 'spasex_{}.jpg'.format(counter))
+    for counter, url_photo in enumerate(get_latest_spasex_photos_urls()):
+        filename = 'SpaceX {}.{}'.format(counter, get_file_extension(url_photo))
+        download_image(url_photo, filename)
 
 
+def get_hubble_images_list(url):
+    response = requests.get(url)
+    photos_list = json.loads(response.text)['image_files']
+    return [photo['file_url'] for photo in photos_list]
 
+
+def download_hubble_image(image_id):
+    url = 'http://hubblesite.org/api/v3/image/{}'.format(image_id)
+    photo_url = get_hubble_images_list(url)[-1]
+    filename = 'hubble_{}.{}'.format(image_id, get_file_extension(photo_url))
+    download_image(photo_url, filename)
+
+def download_hubble_collection_images(collection):
+    url = 'http://hubblesite.org/api/v3/images/{}'.format(collection)
+    response = requests.get(url)
+    for photo in json.loads(response.text):
+        download_hubble_image(int(photo['id']))
+        print('{} downloaded'.format(photo['name']))
 
 
 if __name__ == '__main__':
-    # url = 'https://upload.wikimedia.org/wikipedia/commons/3/3f/HST-SM4.jpeg'
-    # filename = 'hubble.jpg'
-    # download_image(url, filename)
-    pprint(
-        get_latest_spasex_photos()
-    )
-    download_latest_spasex_photos()
+    download_hubble_collection_images('spacecraft')
