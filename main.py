@@ -1,5 +1,6 @@
 import requests, os, json
 from pprint import pprint
+from instabot.instabot import Bot
 
 
 def get_file_extension(file_url):
@@ -40,6 +41,7 @@ def download_hubble_image(image_id):
     filename = get_hubble_images_list(url)[1] + '.' + get_file_extension(photo_url)
     download_image(photo_url, filename)
 
+
 def download_hubble_collection_images(collection):
     url = 'http://hubblesite.org/api/v3/images/{}'.format(collection)
     response = requests.get(url)
@@ -49,5 +51,8 @@ def download_hubble_collection_images(collection):
 
 
 if __name__ == '__main__':
-    download_hubble_image(1)
+    bot = Bot()
+    bot.login(username='cosmicpython', password='Evx9WBDCv7xIaXYX8j0')
+    bot.upload_photo('images/1.jpg')
+
 
