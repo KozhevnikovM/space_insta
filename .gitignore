@@ -2,5 +2,9 @@ venv/
 .idea/
 hubble.jpg
 images/
-*.txt
 *.log
+blacklist.txt
+comments.txt
+followed.txt
+friends.txt
+skiped.txt
