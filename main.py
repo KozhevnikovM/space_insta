@@ -30,13 +30,14 @@ def download_latest_spasex_photos():
 def get_hubble_images_list(url):
     response = requests.get(url)
     photos_list = json.loads(response.text)['image_files']
-    return [photo['file_url'] for photo in photos_list]
+    photo_name = json.loads(response.text)['name']
+    return [photo['file_url'] for photo in photos_list], photo_name
 
 
 def download_hubble_image(image_id):
     url = 'http://hubblesite.org/api/v3/image/{}'.format(image_id)
-    photo_url = get_hubble_images_list(url)[-1]
-    filename = 'hubble_{}.{}'.format(image_id, get_file_extension(photo_url))
+    photo_url = get_hubble_images_list(url)[0][-1]
+    filename = get_hubble_images_list(url)[1] + '.' + get_file_extension(photo_url)
     download_image(photo_url, filename)
 
 def download_hubble_collection_images(collection):
@@ -48,4 +49,5 @@ def download_hubble_collection_images(collection):
 
 
 if __name__ == '__main__':
-    download_hubble_collection_images('spacecraft')
+    download_hubble_image(1)
+
