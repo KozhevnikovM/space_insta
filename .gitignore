@@ -2,9 +2,15 @@ venv/
 .idea/
 hubble.jpg
 images/
+.env
 *.log
 blacklist.txt
 comments.txt
 followed.txt
 friends.txt
-skiped.txt
+skipped.txt
+unfollowed.txt
+whitelist.txt
+cookie.txt
+cosmicpython.checkpoint
+published.txt

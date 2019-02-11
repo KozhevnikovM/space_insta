@@ -1,36 +1,28 @@
-import requests, os
+import os
 from dotenv import load_dotenv
 import instabot
 
 
-def get_file_extension(file_url):
-    return file_url.split('.')[-1]
+def add_to_published(image_filename, log_file):
+    with open(log_file, 'a') as file:
+        file.write(image_filename)
+        file.write('\n')
 
 
-def download_image(image_url, filename):
-    if not os.path.exists('images'):
-        os.makedirs('images')
-    response = requests.get(image_url)
-    if not response.ok:
-        return None
-    with open('images/{}'.format(filename), 'wb') as image_file:
-        image_file.write(response.content)
+def check_is_published(image_filename, log_file):
+    with open(log_file, 'r') as file:
+        return image_filename in file.read().splitlines()
 
-
-def upload_to_insta(username, password, photo, caption=None):
-    bot = Bot()
-    bot.login(username=username, password=password)
-    bot.upload_photo(photo, caption)
 
 if __name__ == '__main__':
     load_dotenv()
     bot = instabot.Bot()
-    bot.login(username=os.getenv('USERNAME'), password=os.getenv('PASSWORD'))
-    if bot.api.last_response != 200:
-        exit(bot.api.last_response)
+    bot.login(username=os.getenv('LOGIN'), password=os.getenv('PASSWORD'))
+    published = 'published.txt'
     photos = os.listdir('images')
-    posted_photos = []
+
     for photo in photos:
-        if photo not in posted_photos:
+        if not check_is_published(photo, published):
             bot.upload_photo('images/{}'.format(photo))
-            posted_photos += photo
+            add_to_published(photo, published)
+        print('File already published')
