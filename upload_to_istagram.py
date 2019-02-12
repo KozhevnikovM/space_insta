@@ -13,6 +13,7 @@ def check_is_published(image_filename, log_file):
     with open(log_file, 'r') as file:
         return image_filename in file.read().splitlines()
 
+
 def upload_photos(username, password, photos_dir, file_with_published):
     bot = instabot.Bot()
     bot.login(username=username, password=password)
@@ -23,7 +24,6 @@ def upload_photos(username, password, photos_dir, file_with_published):
             bot.upload_photo('{}/{}'.format(photos_dir, photo))
             add_to_published(photo, file_with_published)
         return None
-
 
 
 if __name__ == '__main__':
