@@ -28,7 +28,6 @@ def upload_photos(username, password, photos_dir, file_with_published):
 
 if __name__ == '__main__':
     load_dotenv()
-    bot = instabot.Bot()
     username, password = os.getenv('LOGIN'), os.getenv('PASSWORD')
     published_file = 'published.txt'
     photos_dir = 'images'
