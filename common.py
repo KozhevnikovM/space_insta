@@ -10,5 +10,5 @@ def download_image(image_url, filename):
     response = requests.get(image_url)
     if not response.ok:
         return None
-    with open('images/{}'.format(filename), 'wb') as image_file:
+    with open(os.path.join('images', filename), 'wb') as image_file:
         image_file.write(response.content)
