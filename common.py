@@ -2,7 +2,7 @@ import requests, os
 
 
 def get_file_extension(file_url):
-    return file_url.split('.')[-1]
+    return os.path.splitext(file_url)[-1]
 
 
 def download_image(image_url, filename):
