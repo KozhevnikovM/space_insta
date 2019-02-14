@@ -1,10 +1,10 @@
-import requests, json
+import requests
 from common import download_image, get_file_extension
 
 def get_latest_spasex_photos_urls():
     url='https://api.spacexdata.com/v3/launches/latest?pretty=true'
     response = requests.get(url)
-    photos_list = json.loads(response.text)['links']['flickr_images']
+    photos_list = response.json()['links']['flickr_images']
     return photos_list
 
 

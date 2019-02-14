@@ -1,10 +1,10 @@
-import requests, json, re, argparse
+import requests, re, argparse
 from common import download_image, get_file_extension
 
 def get_hubble_images_list(url):
     response = requests.get(url)
-    photos_list = json.loads(response.text)['image_files']
-    photo_name = json.loads(response.text)['name']
+    photos_list = response.json()['image_files']
+    photo_name = response.json()['name']
     return [photo['file_url'] for photo in photos_list], photo_name
 
 
@@ -21,7 +21,7 @@ def download_hubble_image(image_id):
 def download_hubble_collection_images(collection):
     url = 'http://hubblesite.org/api/v3/images/{}'.format(collection)
     response = requests.get(url)
-    for photo in json.loads(response.text):
+    for photo in response.json():
         download_hubble_image(int(photo['id']))
         print('{} downloaded'.format(photo['name']))
 
