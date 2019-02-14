@@ -17,13 +17,11 @@ def check_is_published(image_filename, log_file):
 def upload_photos(username, password, photos_dir, file_with_published):
     bot = instabot.Bot()
     bot.login(username=username, password=password)
-    photos_list = os.listdir(photos_dir)
-
-    for photo in photos_dir:
+    for photo in os.listdir(photos_dir):
         if not check_is_published(photo, file_with_published):
             bot.upload_photo('{}/{}'.format(photos_dir, photo))
             add_to_published(photo, file_with_published)
-        return None
+        print('Skiped')
 
 
 if __name__ == '__main__':

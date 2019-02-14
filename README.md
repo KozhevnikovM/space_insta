@@ -8,7 +8,7 @@ python3.5+
 ### Install requirements:
 
 ```bash
-$ pip install -r requierments.txt
+$ pip install -r requirements.txt
 
 ``` 
 ### Setup your instagram credentials:
