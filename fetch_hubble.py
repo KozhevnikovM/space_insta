@@ -10,8 +10,9 @@ def get_hubble_images_list(url):
 
 def download_hubble_image(image_id):
     url = 'http://hubblesite.org/api/v3/image/{}'.format(image_id)
-    photo_url = get_hubble_images_list(url)[0][-1]
-    file_name = re.sub(r'[\\/\?<>:]', '', get_hubble_images_list(url)[1])
+    hubble_images_list = get_hubble_images_list(url)
+    photo_url = hubble_images_list[0][-1]
+    file_name = re.sub(r'[\\/\?<>:]', '', hubble_images_list[1])
     file_ext = get_file_extension(photo_url)
     filename = file_name + '.' + file_ext
     download_image(photo_url, filename)
