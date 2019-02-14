@@ -1,6 +1,7 @@
 import requests, re, argparse
 from common import download_image, get_file_extension
 
+
 def get_hubble_images_list(url):
     response = requests.get(url)
     photos_list = response.json()['image_files']
@@ -18,17 +19,16 @@ def download_hubble_image(image_id):
     download_image(photo_url, filename)
 
 
-def download_hubble_collection_images(collection):
+def fetch_hubble_collection(collection):
     url = 'http://hubblesite.org/api/v3/images/{}'.format(collection)
-    response = requests.get(url)
-    for photo in response.json():
-        download_hubble_image(int(photo['id']))
-        print('{} downloaded'.format(photo['name']))
+    return requests.get(url).json()
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('collection', default='wallpaper', nargs='?')
     collection = parser.parse_args().collection
-    download_hubble_collection_images(collection)
+    for photo in fetch_hubble_collection(collection):
+        download_hubble_image(int(photo['id']))
+        print('{} downloaded'.format(photo['name']))
 
